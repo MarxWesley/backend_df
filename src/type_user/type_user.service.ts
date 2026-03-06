@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateTypeUserDto } from './dto/create-type_user.dto';
 import { UpdateTypeUserDto } from './dto/update-type_user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,11 @@ export class TypeUserService {
   ) {}
 
   create(createTypeUserDto: CreateTypeUserDto) {
-    return 'This action adds a new typeUser';
+    if (createTypeUserDto.type === "" || createTypeUserDto.type == null) {
+      throw new ForbiddenException("O tipo de acesso não deve ser vazio ou nulo")
+    }
+    
+    return this.typeUserRepository.save(createTypeUserDto);
   }
 
   async findAll() {
