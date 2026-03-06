@@ -21,6 +21,14 @@ async function bootstrap() {
     .setTitle('Díomicio Freitas API')
     .setDescription('Documentação da API do backend do díomicio freitas')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+      },
+      'access-token',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document); // 'api' is the URL path for the docs
