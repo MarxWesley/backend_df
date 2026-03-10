@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { TypeUserModule } from 'src/type_user/type_user.module';
+import { RoleModule } from 'src/role/role.module';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
@@ -22,7 +22,7 @@ import { UsersModule } from 'src/users/users.module';
       synchronize: true,
     }),
     UsersModule,
-    TypeUserModule,
+    RoleModule,
   ],
   providers: [AppService],
 })

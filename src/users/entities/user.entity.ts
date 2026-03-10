@@ -1,4 +1,4 @@
-import { TypeUser } from "src/type_user/entities/type_user.entity";
+import { Role } from "src/role/entities/role.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'Users'})
@@ -15,11 +15,11 @@ export class User {
     @Column({type: 'varchar', nullable: false, length: 100})
     password: string;
 
-    @ManyToOne(() => TypeUser, (TypeUser) => TypeUser.type, {
+    @ManyToOne(() => Role, (role) => role.name, {
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
     })
-    type_user: TypeUser;
+    role: Role;
 
     @CreateDateColumn()
     created_at?: Date;

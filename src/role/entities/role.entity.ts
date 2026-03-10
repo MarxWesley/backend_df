@@ -2,12 +2,12 @@ import { User } from "src/users/entities/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'Type_Users'})
-export class TypeUser {
+export class Role {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'varchar', nullable: false, length: 255})
-    type: string;
+    @Column({name: 'name', nullable: false, length: 255})
+    name: string;
 
     @OneToMany(() => User, (user) => user.id, {
         onDelete: "CASCADE",
