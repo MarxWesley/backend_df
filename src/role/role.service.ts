@@ -46,11 +46,25 @@ export class RoleService {
     }
   }
 
-  update(id: number, updateTypeUserDto: UpdateRoleDto) {
-    return `This action updates a #${id} typeUser`;
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    const roleToUpdate = await this.findOne(id);
+
+    if (!roleToUpdate) {
+      throw new NotFoundException("Tipo de acesso não encontrado")
+    }
+
+    if (updateRoleDto.name === "" || updateRoleDto.name == null) {
+      throw new ForbiddenException("O tipo de acesso não deve ser vazio ou nulo")
+    }
+
+    const updatedRole = this.roleRepository.merge(roleToUpdate, updateRoleDto);
+
+    return this.roleRepository.save(updatedRole);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} typeUser`;
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return this.roleRepository.delete(id);
   }
 }

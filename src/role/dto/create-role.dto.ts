@@ -7,7 +7,7 @@ export class CreateRoleDto {
     @IsString({message: "Campo deve ser String"})
     @IsNotEmpty({message: "campo não pode ser em branco"})
     @ApiProperty({
-        name: 'string',
+        name: 'name',
         description: 'nível de acesso',
         example: 'Ex: Admin, Professor, RH',
         nullable: false
