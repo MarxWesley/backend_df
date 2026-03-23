@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 
 export class CreateUserDto {
     @Transform(({value}) => value.trim().toUpperCase())
@@ -33,6 +33,7 @@ export class CreateUserDto {
         example: 'Ex: senha123',
         nullable: false
     })
+    @Length(6, 100, {message: "A senha deve ser maior que 6 caracteres"})
     password: string;
 
     @IsNotEmpty({message: "campo não pode ser em branco"})
