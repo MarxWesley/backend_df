@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('person')
+@Entity('Person')
 export class Person {
     @PrimaryGeneratedColumn()
     id: number;
@@ -8,7 +8,7 @@ export class Person {
     @Column({ name: 'name', type: 'varchar', length: 100, nullable: false })
     nome: string;
 
-    @Column({ name: 'cpf', type: 'varchar', length: 11, nullable: false })
+    @Column({ name: 'cpf', type: 'varchar', length: 11, nullable: false, unique: true })
     cpf: string;
 
     @Column({ type: 'date', nullable: true })
@@ -32,7 +32,7 @@ export class Person {
     @Column({ type: 'text', nullable: true })
     info_medicamentos: string;
 
-    @Column({ type: 'boolean', length: 20, default: true })
+    @Column({ type: 'boolean',  default: true })
     status: boolean;
 
     @CreateDateColumn({ type: 'timestamptz' })

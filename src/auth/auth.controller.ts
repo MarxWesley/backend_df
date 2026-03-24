@@ -11,10 +11,6 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'Realizar login' })
   async login(@Body() createAuthDto: CreateAuthDto) {
-    const user = await this.authService.userValidation(createAuthDto);
-
-    if (!user) throw new UnauthorizedException();
-
-    return this.authService.login(user);
+    return this.authService.login(createAuthDto.email, createAuthDto.password);
   }
 }

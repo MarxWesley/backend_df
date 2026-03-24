@@ -13,10 +13,6 @@ export class RoleService {
   ) {}
 
   create(createRoleDto: CreateRoleDto) {
-    if (createRoleDto.name === "" || createRoleDto.name == null) {
-      throw new ForbiddenException("O tipo de acesso não deve ser vazio ou nulo")
-    }
-    
     const newRole = this.roleRepository.create(createRoleDto);
 
     return this.roleRepository.save(newRole);

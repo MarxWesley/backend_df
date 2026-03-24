@@ -4,8 +4,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateRoleDto {
     @Transform(({ value }) => value.trim().toUpperCase())
-    @IsString({message: "Campo deve ser String"})
-    @IsNotEmpty({message: "campo não pode ser em branco"})
+    @IsString({ message: "Campo deve ser String" })
+    @IsNotEmpty({ message: "campo não pode ser em branco" })
     @ApiProperty({
         name: 'name',
         description: 'nível de acesso',
