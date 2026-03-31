@@ -32,7 +32,16 @@ export class UsersService {
 
   async findAll() {
     try {
-      return await this.userRepository.find()
+      return await this.userRepository.find({relations: ['role'],
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: {
+            name: true
+          },
+        }
+      });
     } catch (error) {
       throw error
     }
@@ -41,7 +50,16 @@ export class UsersService {
   async findOne(id: number) {
     try {
       const user = await this.userRepository.findOne({
-        where: { id }
+        where: { id },
+        relations: ['role'],
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: {
+            name: true
+          },
+        }
       });
 
       if (!user) throw new NotFoundException("Usuário não encontrado.")
@@ -59,7 +77,7 @@ export class UsersService {
   }
 
   async findByEmailOrFail(email: string) {
-    const user = await this.userRepository.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email }, relations: ['role'] });
     if (!user) throw new NotFoundException('Usuário não encontrado');
     return user;
   }
@@ -67,7 +85,15 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const userToUpdate = await this.findOne(id);
 
-    const updatedUser = this.userRepository.merge(userToUpdate, updateUserDto)
+    // 🔐 só criptografa se vier senha
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    const updatedUser = this.userRepository.merge(
+      userToUpdate,
+      updateUserDto
+    );
 
     return this.userRepository.save(updatedUser);
   }

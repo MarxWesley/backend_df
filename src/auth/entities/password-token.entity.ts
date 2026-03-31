@@ -1,9 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 @Entity('password_tokens')
 export class PasswordToken {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @ManyToOne(() => User, (user) => user.passwordTokens, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
+    user: User;
 
     @Column({ type: 'int' })
     userId: number;

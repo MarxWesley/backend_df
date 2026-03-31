@@ -14,7 +14,7 @@ import { PasswordToken } from './entities/password-token.entity';
 @Module({
   imports: [
     UsersModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([AuthToken, PasswordToken]),
     JwtModule.register({
       secret: 'chave-secreta-super-segura',
@@ -27,10 +27,6 @@ import { PasswordToken } from './entities/password-token.entity';
   providers: [
     AuthService,
     JwtStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard
-    }
   ],
 })
 export class AuthModule { }

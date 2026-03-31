@@ -44,5 +44,5 @@ export class CreatePersonDto {
 
     @IsOptional()
     @IsBoolean()
-    status?: boolean;
+    ativo?: boolean;
 }

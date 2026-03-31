@@ -33,7 +33,7 @@ export class Person {
     info_medicamentos: string;
 
     @Column({ type: 'boolean',  default: true })
-    status: boolean;
+    ativo: boolean;
 
     @CreateDateColumn({ type: 'timestamptz' })
     created_at: Date;

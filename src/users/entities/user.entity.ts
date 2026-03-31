@@ -1,5 +1,7 @@
+import { AuthToken } from "src/auth/entities/auth-token.entity";
+import { PasswordToken } from "src/auth/entities/password-token.entity";
 import { Role } from "src/role/entities/role.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'Users' })
 export class User {
@@ -20,6 +22,12 @@ export class User {
         onUpdate: "CASCADE"
     })
     role: Role;
+
+    @OneToMany(() => AuthToken, (token) => token.user)
+    authTokens: AuthToken[];
+
+    @OneToMany(() => PasswordToken, (token) => token.user)
+    passwordTokens: PasswordToken[];
 
     @CreateDateColumn()
     created_at?: Date;

@@ -5,6 +5,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/auth/decorators/roles.decoretor';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('role')
 export class RoleController {
@@ -12,8 +13,8 @@ export class RoleController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new role' })
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('acess-token')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth('access-token')
   @Roles(1)
   create(@Body() createTypeUserDto: CreateRoleDto) {
     return this.typeUserService.create(createTypeUserDto);
@@ -21,8 +22,8 @@ export class RoleController {
 
   @Get()
   @ApiOperation({ summary: 'returns all roles' })
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('acess-token')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth('access-token')
   @Roles(1)
   findAll() {
     return this.typeUserService.findAll();
@@ -30,8 +31,8 @@ export class RoleController {
 
   @Get(':id')
   @ApiOperation({ summary: 'returns a role by id' })
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('acess-token')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth('access-token')
   @ApiParam({ name: 'id', description: 'The id of the role', required: true, example: 1 })
   @Roles(1)
   findOne(@Param('id') id: string) {
@@ -39,8 +40,8 @@ export class RoleController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('acess-token')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Update a role by id' })
   @ApiParam({ name: 'id', description: 'The id of the role', required: true, example: 1 })
   @Roles(1)
@@ -49,8 +50,8 @@ export class RoleController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('acess-token')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Delete a role by id' })
   @ApiParam({ name: 'id', description: 'The id of the role', required: true, example: 1 })
   @Roles(1)
