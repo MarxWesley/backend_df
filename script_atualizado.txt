@@ -1,0 +1,139 @@
+-- =========================
+-- ROLE
+-- =========================
+CREATE TABLE roles (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- =========================
+-- USERS
+-- =========================
+CREATE TABLE users (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  type_user_id BIGINT REFERENCES type_user(id),
+  created_at timestamptz,
+  updated_at timestamptz
+);
+
+-- =========================
+-- AUTH TOKENS
+-- =========================
+CREATE TABLE auth_tokens (
+  id BIGSERIAL PRIMARY KEY,
+  user_id BIGINT REFERENCES users(id),
+  refresh_token_hash TEXT,
+  expires_at timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz,
+  ip inet,
+  user_agent TEXT
+);
+
+-- =========================
+-- PASSWORD RESET TOKENS
+-- =========================
+CREATE TABLE password_reset_tokens (
+  id BIGSERIAL PRIMARY KEY,
+  user_id BIGINT REFERENCES users(id),
+  token_hash TEXT,
+  expires_at timestamptz,
+  used_at timestamptz,
+  created_at timestamptz
+);
+
+-- =========================
+-- PEOPLE
+-- =========================
+CREATE TABLE people (
+  id BIGSERIAL PRIMARY KEY,
+  nome VARCHAR(100),
+  data_nascimento DATE,
+  data_entrada DATE,
+  telefone VARCHAR(20),
+  nome_responsavel VARCHAR(100),
+  telefone_responsavel VARCHAR(20),
+  usa_medicamento BOOLEAN,
+  info_medicamentos TEXT,
+  status VARCHAR(20),
+  created_at timestamptz,
+  updated_at timestamptz
+);
+
+-- =========================
+-- COMPANIES
+-- =========================
+CREATE TABLE companies (
+  id BIGSERIAL PRIMARY KEY,
+  nome_fantasia VARCHAR(100),
+  razao_social VARCHAR(100),
+  cnpj VARCHAR(20),
+  endereco TEXT,
+  telefone VARCHAR(20),
+  contato_rh_nome VARCHAR(100),
+  contato_rh_email VARCHAR(100),
+  created_at timestamptz,
+  updated_at timestamptz
+);
+
+-- =========================
+-- PEOPLE_COMPANY
+-- =========================
+CREATE TABLE people_company (
+  id BIGSERIAL PRIMARY KEY,
+  pessoa_id BIGINT REFERENCES people(id),
+  empresa_id BIGINT REFERENCES companies(id),
+  data_admissao DATE,
+  data_desligamento DATE,
+  funcao VARCHAR(100),
+  contato_rh VARCHAR(100),
+  status VARCHAR(20),
+  created_at timestamptz,
+  updated_at timestamptz
+);
+
+-- =========================
+-- MONITORING SHEETS
+-- =========================
+CREATE TABLE monitoring_sheets (
+  id BIGSERIAL PRIMARY KEY,
+  people_company_id BIGINT REFERENCES people_company(id),
+  data_visita DATE,
+  contato_rh VARCHAR(100),
+  parecer_geral TEXT,
+  created_at timestamptz
+);
+
+-- =========================
+-- REVIEWS
+-- =========================
+CREATE TABLE reviews (
+  id BIGSERIAL PRIMARY KEY,
+  pessoa_id BIGINT REFERENCES people(id),
+  data_avaliacao DATE,
+  tipo VARCHAR(20),
+  professor_responsavel VARCHAR(100),
+  created_at timestamptz
+);
+
+-- =========================
+-- QUESTIONS
+-- =========================
+CREATE TABLE questions (
+  id BIGSERIAL PRIMARY KEY,
+  question TEXT
+);
+
+-- =========================
+-- REVIEW ANSWERS
+-- =========================
+CREATE TABLE review_answers (
+  id BIGSERIAL PRIMARY KEY,
+  review_id BIGINT REFERENCES reviews(id),
+  question_id BIGINT REFERENCES questions(id),
+  answer TEXT,
+  created_at timestamptz
+);
