@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Review } from "src/reviews/entities/review.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('Person')
 export class Person {
@@ -34,6 +35,9 @@ export class Person {
 
     @Column({ type: 'boolean',  default: true })
     ativo: boolean;
+
+    @OneToMany(() => Review, (review) => review.person)
+    reviews: Review[];
 
     @CreateDateColumn({ type: 'timestamptz' })
     created_at: Date;

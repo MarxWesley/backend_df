@@ -6,6 +6,9 @@ import { RoleModule } from 'src/role/role.module';
 import { UsersModule } from 'src/users/users.module';
 import { PeopleModule } from 'src/people/people.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { QuestionsModule } from 'src/questions/questions.module';
+import { ReviewAnswerModule } from 'src/review_answer/review_answer.module';
+import { ReviewsModule } from 'src/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { AuthModule } from 'src/auth/auth.module';
     RoleModule,
     PeopleModule,
     AuthModule,
+    QuestionsModule,
+    ReviewAnswerModule,
+    ReviewsModule,
   ],
   providers: [AppService],
 })
