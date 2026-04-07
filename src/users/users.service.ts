@@ -27,6 +27,8 @@ export class UsersService {
       password: hashedPassword,
     });
 
+    console.log(newUser)
+
     return await this.userRepository.save(newUser);
   }
 

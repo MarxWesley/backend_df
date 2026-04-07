@@ -12,10 +12,10 @@ export class Review {
     })
     person: Person;
 
-    @Column({ length: 20, nullable: true })
+    @Column({ length: 255, nullable: true })
     tipo: string;
 
-    @Column({ length: 100, nullable: true })
+    @Column({ length: 255, nullable: true })
     professor_responsavel: string;
 
     @CreateDateColumn()

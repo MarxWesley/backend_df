@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     console.log('JWT PAYLOAD:', payload); // 👈 agora vai aparecer
     return {
       userId: Number(payload.sub),
-      roleId: Number(payload.roleId),
+      roleId: Number(payload.roleId.id),
     };
   }
 }

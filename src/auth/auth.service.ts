@@ -56,7 +56,7 @@ export class AuthService {
 
     // 🔥 CORREÇÃO: roleId correto
     const accessToken = this.jwtService.sign(
-      { sub: user.id, roleId: user.role.id },
+      { sub: user.id, roleId: user.role },
       { expiresIn: '15m' },
     );
 

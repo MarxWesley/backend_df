@@ -1,98 +1,202 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📌 Backend - Sistema Díomicio Freitas (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API construída com **NestJS** que fornece endpoints para gerenciamento de usuários, pessoas e avaliações.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este projeto segue a arquitetura modular do NestJS e utiliza **TypeORM**, **PostgreSQL**, **JWT com Passport** e **Swagger** para documentação da API.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🧰 Tecnologias Utilizadas
 
-## Project setup
+✔ NestJS (Node.js framework para APIs) :contentReference[oaicite:1]{index=1}  
+✔ TypeScript  
+✔ PostgreSQL  
+✔ TypeORM  
+✔ JWT Authentication  
+✔ Swagger (OpenAPI)  
+✔ class-validator / class-transformer  
 
-```bash
-$ npm install
-```
+---
 
-## Compile and run the project
+## 🚀 Funcionalidades Principais
 
-```bash
-# development
-$ npm run start
+✔ Cadastro de usuários com roles (perfil)  
+✔ Autenticação com JWT  
+✔ Cadastro de pessoas (*persons*)  
+✔ Sistema de avaliações vinculado a usuários e pessoas  
+✔ Documentação de API automática com Swagger  
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## 📌 Pré‑Requisitos
 
-## Run tests
+Antes de rodar o projeto, você precisa:
+
+1. Ter o **PostgreSQL** rodando  
+2. Criar um banco de dados para a aplicação  
+3. Criar as roles obrigatórias (ex: ADMIN)
+
+---
+
+## ⚙️ Configuração
+
+### 1. Clone o repositório
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone https://github.com/MarxWesley/backend_df.git
+cd backend_df
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 2. Instale as dependências
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3. Configurar variáveis de ambiente
 
-## Resources
+Crie um arquivo `.env` na raiz com as configurações do banco:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=seu_usuario
+DATABASE_PASSWORD=sua_senha
+DATABASE_NAME=nome_do_banco
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+JWT_SECRET=chave-secreta-super-segura
+JWT_EXPIRES_IN=3600s
+```
 
-## Support
+Ajuste de acordo com suas credenciais locais.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 🧠 Como rodar
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+# modo de desenvolvimento
+npm run start:dev
 
-## License
+# build e produção
+npm run build
+npm run start:prod
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 📄 Documentação da API
+
+Após iniciar o servidor, acesse o Swagger em:
+
+```
+http://localhost:3000/api
+```
+
+Essa documentação fornece todos os endpoints disponíveis, parâmetros, modelos e exemplos de requisição.
+
+---
+
+## 🔐 Fluxo Obrigatório de Criação
+
+Para o sistema funcionar sem erros, siga essa sequência obrigatória:
+
+### 1️⃣ Criar a Role ADMIN
+
+Antes de criar usuários, insira no banco:
+
+```sql
+INSERT INTO role (id, name) VALUES (1, 'ADMIN');
+```
+
+Isso garante que exista uma role válida para user ADMIN.
+
+### 2️⃣ Criar Usuário ADMIN
+
+Utilize o endpoint `/users` para cadastrar usuário:
+
+Exemplo:
+
+```json
+{
+  "name": "Administrador",
+  "email": "admin@email.com",
+  "password": "12345678",
+  "roleId": 1
+}
+```
+
+Se o email já existir, o sistema retornará erro de conflito.
+
+### 3️⃣ Criar Person
+
+Depois de criado um usuário, cadastre uma *person* (pessoa) no sistema.
+
+### 4️⃣ Criar Avaliação
+
+Somente após ter usuário + person será possível criar avaliações vinculadas a ambos.
+
+---
+
+## 🔑 Autenticação JWT
+
+Para acessar rotas protegidas, é necessário:
+
+1. Fazer login com `/auth/login`
+2. Recuperar o token JWT
+3. Incluir o token no header:
+
+```
+Authorization: Bearer <TOKEN>
+```
+
+---
+
+## 📚 Estrutura do Projeto
+
+```
+src/
+ ├── auth/               # Login, JWT, Guards
+ ├── users/              # CRUD de usuários
+ ├── people/             # CRUD de pessoas
+ ├── questions/          # CRUD de criar questões
+ ├── review/             # CRUD de criar provas
+ ├── role/               # Roles de usuários
+ └── common/             # DTOs, filtros, pipes, etc
+```
+
+---
+
+## 💼 Scripts úteis
+
+```bash
+npm run start           # iniciar servidor
+npm run start:dev       # watch mode com hot reload
+npm run build           # compilar TS para JS
+```
+
+---
+
+## 🚀 Deploy
+
+Quando for colocar em produção:
+✔ Configure variáveis de ambiente
+✔ Gere build com `npm run build`
+✔ Use PM2 ou similar para manter o app rodando
+
+Consulte também as docs oficiais do NestJS para detalhes de deploy. ([NestJS Docs][1])
+
+---
+
+## 📌 Observações
+
+✔ O projeto usa **Validação global** (ValidationPipe)
+✔ Rotas não autorizadas retornam erro adequado
+✔ Melhor prática: não exponha dados sensíveis nas respostas
+
+---
+
+## 🧑‍💻 Autor
+
+MarxWesley
+📍 Desenvolvedor Backend
