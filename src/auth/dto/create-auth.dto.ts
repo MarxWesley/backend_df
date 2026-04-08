@@ -10,7 +10,7 @@ export class CreateAuthDto {
     @ApiProperty({
         type: "string",
         description: "email do usuário",
-        example: "email@email.com",
+        example: "admin@admin.com",
         nullable: false
     })
     readonly email: string;

@@ -5,16 +5,26 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
+import { Role } from 'src/role/entities/role.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>
   ) { }
 
   async create(createUserDto: CreateUserDto) {
     const emailAlreadyExist = await this.findByEmail(createUserDto.email)
+
+    const role = await this.roleRepository.findOne({where: {id: createUserDto.roleId }});
+
+    if (!role) {
+      throw new ForbiddenException("Role não existe")
+    }
 
     if (emailAlreadyExist) {
       throw new ForbiddenException("Este email já está em uso!")
@@ -25,6 +35,7 @@ export class UsersService {
     const newUser = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
+      role,
     });
 
     console.log(newUser)
