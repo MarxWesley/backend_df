@@ -12,5 +12,6 @@ import { PeopleService } from 'src/people/people.service';
   imports: [TypeOrmModule.forFeature([PeopleCompany, Person, Company])],
   controllers: [PeopleCompanyController],
   providers: [PeopleCompanyService, CompaniesService, PeopleService],
+  exports: [PeopleCompanyService],
 })
 export class PeopleCompanyModule {}
