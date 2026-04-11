@@ -16,8 +16,8 @@ export class PeopleController {
 
   @Get('search')
   @ApiOperation({ summary: 'Get a Person by CPF or Name'})
-  @ApiQuery({ name: 'q', required: true, example: 'João ou 12345678900' })
-  findByCpf(@Query('q') query: string) {
+  @ApiQuery({ name: 'search', required: true, example: 'João ou 12345678900' })
+  findByCpf(@Query('search') query: string) {
     return this.peopleService.findByNameOrCpf(query);
   }
 

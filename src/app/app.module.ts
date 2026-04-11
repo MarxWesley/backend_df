@@ -9,6 +9,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { QuestionsModule } from 'src/questions/questions.module';
 import { ReviewAnswerModule } from 'src/review_answer/review_answer.module';
 import { ReviewsModule } from 'src/reviews/reviews.module';
+import { CompaniesModule } from 'src/companies/companies.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ReviewsModule } from 'src/reviews/reviews.module';
     QuestionsModule,
     ReviewAnswerModule,
     ReviewsModule,
+    CompaniesModule,
   ],
   providers: [AppService],
 })
