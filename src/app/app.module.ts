@@ -10,6 +10,7 @@ import { QuestionsModule } from 'src/questions/questions.module';
 import { ReviewAnswerModule } from 'src/review_answer/review_answer.module';
 import { ReviewsModule } from 'src/reviews/reviews.module';
 import { CompaniesModule } from 'src/companies/companies.module';
+import { PeopleCompanyModule } from 'src/people_company/people_company.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CompaniesModule } from 'src/companies/companies.module';
     ReviewAnswerModule,
     ReviewsModule,
     CompaniesModule,
+    PeopleCompanyModule,
   ],
   providers: [AppService],
 })
