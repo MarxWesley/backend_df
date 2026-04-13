@@ -224,7 +224,7 @@ Quando for colocar em produção:
 ✔ Gere build com `npm run build`
 ✔ Use PM2 ou similar para manter o app rodando
 
-Consulte também as docs oficiais do NestJS para detalhes de deploy. ([NestJS Docs][1])
+Consulte também as docs oficiais do NestJS para detalhes de deploy. ([Nest JS Docs](https://docs.nestjs.com/))
 
 ---
 
