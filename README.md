@@ -154,15 +154,55 @@ Authorization: Bearer <TOKEN>
 
 ## 📚 Estrutura do Projeto
 
-```
+```bash
 src/
- ├── auth/               # Login, JWT, Guards
- ├── users/              # CRUD de usuários
- ├── people/             # CRUD de pessoas
- ├── questions/          # CRUD de criar questões
- ├── review/             # CRUD de criar provas
- ├── role/               # Roles de usuários
- └── common/             # DTOs, filtros, pipes, etc
+ ├── app/                        # Módulo principal (AppModule, configs globais)
+ │
+ ├── auth/                       # Autenticação (JWT, Guards, strategies)
+ │   ├── dto/
+ │   ├── guards/
+ │   ├── strategies/
+ │   └── services/
+ │
+ ├── users/                      # CRUD de usuários
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── people/                     # Cadastro de pessoas
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── companies/                  # Empresas
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── people_company/             # Relação pessoa x empresa
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── role/                       # Perfis e permissões
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── questions/                  # Questões
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── reviews/                    # Avaliações / provas
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── review_answer/              # Respostas das avaliações
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── monitoring_sheets/          # Monitoramento / acompanhamento
+ │   ├── dto/
+ │   └── entities/
+ │
+ ├── config/                     # Configurações (env, database, etc)
+ │
+ └── main.ts                     # Entry point
 ```
 
 ---
