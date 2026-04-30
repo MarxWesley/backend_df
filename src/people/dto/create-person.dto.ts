@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
 export class CreatePersonDto {
     @IsString({ message: "Campo deve ser String" })
@@ -26,6 +26,16 @@ export class CreatePersonDto {
         nullable: false
     })
     cpf: string;
+
+    @IsNotEmpty({ message: "campo não pode ser em branco" })
+    @IsNumber({}, { message: "campo deve ser um númerico" })
+    @ApiProperty({
+        name: 'roleId',
+        description: 'ID do papel da pessoa',
+        example: 3,
+        nullable: false
+    })
+    roleId: number;
 
     @IsOptional()
     @IsDateString()

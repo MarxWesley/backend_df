@@ -70,6 +70,7 @@ export class UsersService {
           name: true,
           email: true,
           role: {
+            id: true,
             name: true
           },
         }

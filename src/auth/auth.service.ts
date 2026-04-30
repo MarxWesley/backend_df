@@ -51,7 +51,7 @@ export class AuthService {
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Senha ou email inválidos');
     }
 
     // 🔥 CORREÇÃO: roleId correto

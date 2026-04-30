@@ -1,5 +1,6 @@
 import { Review } from "src/reviews/entities/review.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Role } from "src/role/entities/role.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('Person')
 export class Person {
@@ -35,6 +36,12 @@ export class Person {
 
     @Column({ type: 'boolean',  default: true })
     ativo: boolean;
+
+    @ManyToOne(() => Role, (role) => role.name, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
+    role: Role;
 
     @OneToMany(() => Review, (review) => review.person)
     reviews: Review[];

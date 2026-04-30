@@ -51,6 +51,7 @@ export class PeopleCompanyService {
     return await this.peopleCompanyRepository.find({
       relations: ['empresa', 'pessoa'],
       order: { data_admissao: 'DESC' },
+      where: { status: PeopleCompanyStatus.ATIVO },
     });
   }
 

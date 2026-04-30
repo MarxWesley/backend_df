@@ -1,3 +1,4 @@
+import { Person } from "src/people/entities/person.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -14,4 +15,10 @@ export class Role {
         onUpdate: "CASCADE"
     })
     user: User;
+
+    @OneToMany(() => Person, (person) => person.id, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    })
+    person: Person;
 }

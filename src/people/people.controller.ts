@@ -21,6 +21,12 @@ export class PeopleController {
     return this.peopleService.findByNameOrCpf(query);
   }
 
+  @Get('role/:roleName')
+  @ApiOperation({ summary: 'Get People by Role Name'})
+  findByRoleName(@Param('roleName') roleName: string) {
+    return this.peopleService.findByRoleName(roleName);
+  }
+
   @Get()
   @ApiOperation({ summary: 'List all People'})
   findAll() {

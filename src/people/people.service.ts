@@ -26,7 +26,7 @@ export class PeopleService {
   }
 
   async findAll() {
-    const people = await this.personRepository.find({where: {ativo: true}});
+    const people = await this.personRepository.find({where: {ativo: true}, relations: ['role']});
 
     if (!people) {
       throw new NotFoundException('Nenhuma pessoa encontrada');
@@ -36,7 +36,7 @@ export class PeopleService {
   }
 
   async findOne(id: number) {
-    const person = await this.personRepository.findOne({ where: { id } });
+    const person = await this.personRepository.findOne({ where: { id }, relations: ['role'] });
 
     if (!person) {
       throw new NotFoundException('Pessoa não encontrada');
@@ -45,17 +45,34 @@ export class PeopleService {
     return person;
   }
 
-  async findByNameOrCpf(serach: string) {
-    if(!Search) {
+  async findByNameOrCpf(search: string) {
+    if(!search) {
       throw new NotFoundException('Parâmetro de busca é obrigatório');
     }
 
     return this.personRepository.createQueryBuilder('person')
-      .where('person.nome LIKE :search', { search: `%${serach}%` })
-      .orWhere('person.cpf LIKE :search', { search: `%${serach}%` })
+      .where('person.nome LIKE :search', { search: `%${search}%` })
+      .orWhere('person.cpf LIKE :search', { search: `%${search}%` })
       .andWhere('person.ativo = :ativo', { ativo: true })
       .orderBy('person.nome', 'ASC')
-      .getMany();
+      .getMany()
+      .catch(() => {
+        throw new NotFoundException('Nenhuma pessoa encontrada com o nome ou CPF especificado');
+      });
+  }
+
+  async findByRoleName(roleName: string) {
+    try {
+      const people = await this.personRepository.find({ where: { role: { name: roleName }, ativo: true }, relations: ['role'] });
+
+      if (people.length === 0) {
+        throw new NotFoundException('Nenhuma pessoa encontrada com o papel especificado');
+      }
+
+      return people;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto) {
