@@ -16,8 +16,27 @@ export class PeopleService {
   async create(createPersonDto: CreatePersonDto) {
     const cpfExists = await this.personRepository.findOne({ where: { cpf: createPersonDto.cpf } });
 
+    const today = new Date();
+
     if (cpfExists) {
-      throw new ConflictException('CPF já existe');
+      throw new ConflictException({
+        message: 'CPF já existe',
+        field: 'cpf'
+      });
+    }
+
+    if (createPersonDto.data_nascimento && createPersonDto.data_nascimento > today) {
+      throw new ConflictException({
+        message: 'Data de nascimento não pode ser no futuro',
+        field: 'data_nascimento'
+      });
+    }
+
+    if (createPersonDto.data_entrada && createPersonDto.data_entrada > today) {
+      throw new ConflictException({
+        message: 'Data de entrada não pode ser no futuro',
+        field: 'data_entrada'
+      });
     }
 
     const person = this.personRepository.create(createPersonDto);
@@ -26,7 +45,7 @@ export class PeopleService {
   }
 
   async findAll() {
-    const people = await this.personRepository.find({where: {ativo: true}, relations: ['role']});
+    const people = await this.personRepository.find({ where: { ativo: true }, relations: ['role'] });
 
     if (!people) {
       throw new NotFoundException('Nenhuma pessoa encontrada');
@@ -46,7 +65,7 @@ export class PeopleService {
   }
 
   async findByNameOrCpf(search: string) {
-    if(!search) {
+    if (!search) {
       throw new NotFoundException('Parâmetro de busca é obrigatório');
     }
 
@@ -77,13 +96,31 @@ export class PeopleService {
 
   async update(id: number, updatePersonDto: UpdatePersonDto) {
     const person = await this.findOne(id);
+    const today = new Date();
 
     if (updatePersonDto.cpf && updatePersonDto.cpf !== person.cpf) {
       const cpfExists = await this.personRepository.findOne({ where: { cpf: updatePersonDto.cpf } });
 
       if (cpfExists) {
-        throw new ConflictException('CPF já existe');
+        throw new ConflictException({
+          message: 'CPF já existe',
+          field: 'cpf'
+        });
       }
+    }
+
+    if (updatePersonDto.data_nascimento && updatePersonDto.data_nascimento > today) {
+      throw new ConflictException({
+        message: 'Data de nascimento não pode ser no futuro',
+        field: 'data_nascimento'
+      });
+    }
+
+    if (updatePersonDto.data_entrada && updatePersonDto.data_entrada > today) {
+      throw new ConflictException({
+        message: 'Data de entrada não pode ser no futuro',
+        field: 'data_entrada'
+      });
     }
 
     const updatedPerson = this.personRepository.merge(person, updatePersonDto);
