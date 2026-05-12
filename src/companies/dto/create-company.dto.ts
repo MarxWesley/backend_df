@@ -81,7 +81,6 @@ export class CreateCompanyDto {
     })
     @IsOptional()
     @IsString({ message: 'O complemento deve ser uma string.' })
-    @Length(1, 100, { message: 'O complemento deve ter entre 1 e 100 caracteres.' })
     complemento?: string;
 
     @ApiProperty({
