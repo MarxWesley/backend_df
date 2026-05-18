@@ -1,6 +1,7 @@
 import { PeopleCompany } from "src/people_company/entities/people_company.entity";
-import { Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity('MonitoringSheet')
 export class MonitoringSheet {
     @PrimaryGeneratedColumn()
     id: number;

@@ -11,6 +11,7 @@ import { ReviewAnswerModule } from 'src/review_answer/review_answer.module';
 import { ReviewsModule } from 'src/reviews/reviews.module';
 import { CompaniesModule } from 'src/companies/companies.module';
 import { PeopleCompanyModule } from 'src/people_company/people_company.module';
+import { MonitoringSheetsModule } from '@/monitoring_sheets/monitoring_sheets.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { PeopleCompanyModule } from 'src/people_company/people_company.module';
     ReviewsModule,
     CompaniesModule,
     PeopleCompanyModule,
+    MonitoringSheetsModule
   ],
   providers: [AppService],
 })
