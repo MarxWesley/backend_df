@@ -141,3 +141,6 @@ CREATE TABLE review_answers (
 =-=-=-=-=
 admin@admin.com
 123456W
+
+professor@professor.com
+123456
