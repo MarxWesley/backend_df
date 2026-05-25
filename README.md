@@ -1,8 +1,6 @@
-# 📌 Backend - Sistema Diômicio Freitas (NestJS)
+# 📌 Backend - Sistema Díomicio Freitas (NestJS)
 
-API RESTful construída com **NestJS** para gerenciamento completo de um sistema de monitoramento e avaliação de pessoas em instituições educacionais e assistenciais.
-
-O sistema permite o acompanhamento comportamental, desenvolvimento de habilidades e evolução acadêmica de alunos, com suporte a múltiplos usuários (administradores, professores, responsáveis) e análise detalhada através de formulários e avaliações estruturadas.
+API construída com **NestJS** que fornece endpoints para gerenciamento de usuários, pessoas e avaliações.
 
 Este projeto segue a arquitetura modular do NestJS e utiliza **TypeORM**, **PostgreSQL**, **JWT com Passport** e **Swagger** para documentação da API.
 
@@ -22,16 +20,11 @@ Este projeto segue a arquitetura modular do NestJS e utiliza **TypeORM**, **Post
 
 ## 🚀 Funcionalidades Principais
 
-✔ **Autenticação & Autorização** - JWT com roles (ADMIN, PROFESSOR, ALUNO, RESPONSAVEL)  
-✔ **Gerenciamento de Usuários** - Cadastro, atualização, permissões por role  
-✔ **Cadastro de Pessoas** - Registro de alunos e monitores  
-✔ **Empresas & Vínculo** - Cadastro de empresas e relação com pessoas  
-✔ **Sistema de Questões** - 46 questões pré-configuradas para avaliação comportamental  
-✔ **Avaliações (Reviews)** - Formulários estruturados para análise de desempenho  
-✔ **Respostas de Avaliações** - Registro de respostas e pontuações  
-✔ **Fichas de Monitoramento** - Acompanhamento contínuo de progressão  
-✔ **Seeds Automáticas** - Criação automática de roles, questões e admin na primeira execução  
-✔ **Documentação Swagger** - API documentada e interativa
+✔ Cadastro de usuários com roles (perfil)  
+✔ Autenticação com JWT  
+✔ Cadastro de pessoas (*persons*)  
+✔ Sistema de avaliações vinculado a usuários e pessoas  
+✔ Documentação de API automática com Swagger  
 
 ---
 
@@ -39,10 +32,9 @@ Este projeto segue a arquitetura modular do NestJS e utiliza **TypeORM**, **Post
 
 Antes de rodar o projeto, você precisa:
 
-1. **Node.js** (v18+) e **npm**
-2. **PostgreSQL** (v12+) instalado e rodando
-3. Conhecimento básico de terminal/PowerShell
-4. Variáveis de ambiente configuradas (`.env`)
+1. Ter o **PostgreSQL** rodando  
+2. Criar um banco de dados para a aplicação  
+3. Criar as roles obrigatórias (ex: ADMIN)
 
 ---
 
@@ -66,49 +58,17 @@ npm install
 Crie um arquivo `.env` na raiz com as configurações do banco:
 
 ```env
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=seu_usuario
-POSTGRES_PASS=sua_senha
-DB_NAME=seu_banco_dados
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=seu_usuario
+DATABASE_PASSWORD=sua_senha
+DATABASE_NAME=nome_do_banco
 
-JWT_SECRET=sua-chave-secreta-super-segura
+JWT_SECRET=chave-secreta-super-segura
 JWT_EXPIRES_IN=3600s
 ```
 
 Ajuste de acordo com suas credenciais locais.
-
-### 4. Executar as Seeds (Importante! ⚠️)
-
-As seeds criam automaticamente:
-- **Roles** do sistema (ADMIN, PROFESSOR, ALUNO, RESPONSAVEL)
-- **Questões padrão** (46 perguntas de avaliação comportamental)
-- **Usuário Admin** pré-configurado
-
-Execute as seeds logo após instalar as dependências:
-
-```bash
-npm run seed
-```
-
-**Saída esperada:**
-```
-🌱 Iniciando seed iniciais...
-✅ Questão 1 criada
-✅ Questão 2 criada
-...
-✅ Role ADMIN criado
-✅ Role PROFESSOR criado
-✅ Role ALUNO criado
-✅ Role RESPONSAVEL criado
-✅ Usuário Admin criado com sucesso
-📧 Email: admin@example.com
-🔑 Senha: Admin@12345
-⚠️  IMPORTANTE: Altere a senha na primeira execução!
-🎉 Seed finalizado!
-```
-
-> **IMPORTANTE:** Após a primeira execução, altere a senha do admin através do endpoint `/auth/change-password` ou atualizar manualmente no banco de dados.
 
 ---
 
@@ -543,64 +503,15 @@ Para mais detalhes, consulte: [NestJS Docs - Deployment](https://docs.nestjs.com
 
 ---
 
-## 📌 Observações Importantes
+## 📌 Observações
 
-✔ O projeto usa **Validação global** (ValidationPipe) em `main.ts`  
-✔ Rotas não autorizadas retornam erro `401` ou `403`  
-✔ Dados sensíveis (senhas) nunca são expostos nas respostas  
-✔ TypeORM está configurado com `synchronize: true` (dev apenas!)  
-✔ Emails devem ser únicos (constraint no banco)  
-✔ Todas as seeds são **idempotentes** (seguro rodar múltiplas vezes)  
-✔ JWT expirado retorna `401 Unauthorized` - renovar com `/auth/refresh`  
-✔ Roles controlam acesso a endpoints específicos via `@Roles()` decorator  
-
-### Troubleshooting
-
-**Erro: "Roles not found"**
-```bash
-# Solução: executar seeds
-npm run seed
-```
-
-**Erro: "Relation 'Role' not found"**
-```bash
-# Solução: aguardar TypeORM sincronizar (ou reiniciar servidor)
-# TypeORM cria tabelas automaticamente com synchronize: true
-```
-
-**Erro: "Duplicate key value violates unique constraint 'Users_email_key'"**
-```bash
-# Solução: email já existe. Use outro ou delete do banco:
-DELETE FROM "Users" WHERE email = 'admin@example.com';
-```
-
-**Conexão recusada ao banco**
-```bash
-# Verificar:
-1. PostgreSQL está rodando? (pg_isready -h localhost)
-2. Credenciais no .env estão corretas?
-3. Banco existe? (CREATE DATABASE df_system;)
-```
+✔ O projeto usa **Validação global** (ValidationPipe)
+✔ Rotas não autorizadas retornam erro adequado
+✔ Melhor prática: não exponha dados sensíveis nas respostas
 
 ---
 
 ## 🧑‍💻 Autor
 
-**MarxWesley**  
-Desenvolvedor Backend | NestJS | TypeScript | PostgreSQL
-
-📍 Repositório: [github.com/MarxWesley/backend_df](https://github.com/MarxWesley/backend_df)
-
----
-
-## 📞 Contato & Suporte
-
-Em caso de dúvidas ou problemas:
-- Abra uma **issue** no repositório
-- Consulte a [documentação oficial do NestJS](https://docs.nestjs.com/)
-- Verifique os logs do servidor com `npm run start:dev`
-
----
-
-**Última atualização:** 2026-05-25  
-**Versão:** 1.0.0
+MarxWesley
+📍 Desenvolvedor Backend
