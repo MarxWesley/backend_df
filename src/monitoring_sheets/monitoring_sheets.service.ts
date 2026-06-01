@@ -11,15 +11,22 @@ export class MonitoringSheetsService {
   constructor(
     @InjectRepository(MonitoringSheet)
     private monitoringSheetRepository: Repository<MonitoringSheet>,
-    
+
     private peopleCompanyService: PeopleCompanyService,
   ) { }
 
   async create(createDto: CreateMonitoringSheetDto) {
-    // Valida se o vínculo existe
     await this.peopleCompanyService.findOne(createDto.people_company_id);
 
-    const sheet = this.monitoringSheetRepository.create(createDto);
+    const sheet = this.monitoringSheetRepository.create({
+      data_visita: createDto.data_visita,
+      contato_rh: createDto.contato_rh,
+      parecer_geral: createDto.parecer_geral,
+      people_company: {
+        id: createDto.people_company_id,
+      } as any,
+    });
+
     return await this.monitoringSheetRepository.save(sheet);
   }
 
