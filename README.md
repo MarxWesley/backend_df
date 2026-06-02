@@ -25,6 +25,9 @@ Este projeto segue a arquitetura modular do NestJS e utiliza **TypeORM**, **Post
 ✔ Cadastro de pessoas (*persons*)  
 ✔ Sistema de avaliações vinculado a usuários e pessoas  
 ✔ Documentação de API automática com Swagger  
+✔ Gerenciamento de empresas e associação com pessoas  
+✔ Fichas de monitoramento contínuo  
+✔ Sistema completo de roles e autorizações  
 
 ---
 
@@ -258,15 +261,6 @@ O sistema usa **JWT (JSON Web Tokens)** para autenticação stateless.
 
 4. **Acessar Rotas Protegidas** - Token será validado automaticamente
 
-### Renovação de Token
-
-Se o token expirar, use `/auth/refresh` para obter um novo sem fazer login novamente:
-
-```bash
-POST /auth/refresh
-Authorization: Bearer <TOKEN_EXPIRADO>
-```
-
 ### Segurança
 
 - ✅ Senhas criptografadas com **bcrypt**
@@ -287,11 +281,11 @@ src/
 │   └── app.module.ts                 # Módulo raiz que importa todos os módulos
 │
 ├── auth/                             # Autenticação & Autorização
-│   ├── dto/                          # LoginDto, ChangePasswordDto
+│   ├── dto/                          # LoginDto, CreateAuthDto
 │   ├── guards/                       # JwtAuthGuard, RolesGuard
 │   ├── strategies/                   # JwtStrategy (validação de token)
 │   ├── entities/                     # AuthToken, PasswordToken
-│   ├── auth.controller.ts            # Endpoints: /auth/login, /auth/refresh
+│   ├── auth.controller.ts            # Endpoints: /auth/login, /auth/me
 │   ├── auth.service.ts               # Lógica de autenticação e JWT
 │   └── auth.module.ts
 │
@@ -409,7 +403,237 @@ Cada módulo segue a estrutura:
 
 ---
 
-## 💼 Scripts úteis
+## � Documentação Completa dos Endpoints
+
+Todos os endpoints estão disponíveis no **Swagger** em `http://localhost:3000/api` após iniciar o servidor.
+
+### 🔐 Autenticação (Auth Module) `/auth`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/auth/login` | ❌ | Realizar login e obter token JWT |
+| GET | `/auth/me` | ✅ | Obter perfil do usuário logado |
+
+**Exemplo POST `/auth/login`:**
+```json
+{
+  "email": "admin@example.com",
+  "password": "Admin@12345"
+}
+```
+
+**Resposta:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user_id": 1,
+  "role": "ADMIN"
+}
+```
+
+---
+
+### 👥 Usuários (Users Module) `/users`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/users` | ❌ | Criar novo usuário |
+| GET | `/users` | ❌ | Listar todos os usuários |
+| GET | `/users/:id` | ❌ | Obter usuário por ID |
+| PATCH | `/users/:id` | ❌ | Atualizar usuário |
+| DELETE | `/users/:id` | ❌ | Deletar usuário |
+
+**Exemplo POST `/users`:**
+```json
+{
+  "name": "João Silva",
+  "email": "joao@example.com",
+  "password": "Senha@12345",
+  "roleId": 3
+}
+```
+
+---
+
+### 🎭 Roles (Role Module) `/role`
+
+| Método | Rota | Requer | Descrição |
+|--------|------|--------|----------|
+| POST | `/role` | JWT + ADMIN | Criar nova role |
+| GET | `/role` | JWT + ADMIN | Listar todas as roles |
+| GET | `/role/:id` | JWT + ADMIN | Obter role por ID |
+| PATCH | `/role/:id` | JWT + ADMIN | Atualizar role |
+| DELETE | `/role/:id` | JWT + ADMIN | Deletar role |
+
+**Exemplo POST `/role`:**
+```json
+{
+  "name": "SUPERVISOR",
+  "description": "Supervisor do sistema"
+}
+```
+
+---
+
+### 🏢 Empresas (Companies Module) `/companies`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/companies` | ❌ | Criar empresa |
+| GET | `/companies/search?search=...` | ❌ | Buscar por nome ou CNPJ |
+| GET | `/companies` | ❌ | Listar todas |
+| GET | `/companies/:id` | ❌ | Obter por ID |
+| PATCH | `/companies/:id` | ❌ | Atualizar |
+| DELETE | `/companies/:id` | ❌ | Deletar |
+
+**Exemplo POST `/companies`:**
+```json
+{
+  "name": "Empresa XYZ",
+  "cnpj": "12.345.678/0001-90",
+  "address": "Rua das Flores, 123",
+  "city": "São Paulo"
+}
+```
+
+**Exemplo GET `/companies/search?search=Nestle`:**
+Busca por nome ou CNPJ.
+
+---
+
+### 👤 Pessoas (People Module) `/people`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/people` | ❌ | Criar pessoa |
+| GET | `/people/search?search=...` | ❌ | Buscar por CPF ou nome |
+| GET | `/people/role/:roleName` | ❌ | Listar por role (ex: ALUNO) |
+| GET | `/people` | ❌ | Listar todas |
+| GET | `/people/:id` | ❌ | Obter por ID |
+| PATCH | `/people/:id` | ❌ | Atualizar |
+| PATCH | `/people/:id/status` | ❌ | Mudar status (ativo/inativo) |
+
+**Exemplo POST `/people`:**
+```json
+{
+  "name": "João da Silva",
+  "cpf": "123.456.789-00",
+  "birthDate": "2010-05-15",
+  "roleId": 3
+}
+```
+
+**Exemplo GET `/people/search?search=João`:**
+Busca por nome ou CPF.
+
+**Exemplo GET `/people/role/ALUNO`:**
+Lista todas as pessoas com a role "ALUNO".
+
+---
+
+### ❓ Questões (Questions Module) `/questions`
+
+| Método | Rota | Requer | Descrição |
+|--------|------|--------|----------|
+| POST | `/questions` | JWT + ADMIN/PROFESSOR | Criar questão |
+| GET | `/questions` | JWT | Listar todas (46 questões padrão) |
+| GET | `/questions/:id` | JWT | Obter por ID |
+| PATCH | `/questions/:id` | JWT + ADMIN/PROFESSOR | Atualizar |
+| DELETE | `/questions/:id` | JWT + ADMIN/PROFESSOR | Deletar |
+
+**Exemplo POST `/questions`:**
+```json
+{
+  "title": "Demonstra isolamento social",
+  "description": "Quando a criança evita interagir com seus pares",
+  "category": "Comportamento em grupo"
+}
+```
+
+---
+
+### ⭐ Avaliações (Reviews Module) `/reviews`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/reviews` | ❌ | Criar avaliação |
+| GET | `/reviews` | ❌ | Listar todas |
+| GET | `/reviews/personName/:name` | ❌ | Buscar avaliações por nome da pessoa |
+| GET | `/reviews/:id` | ❌ | Obter por ID |
+| DELETE | `/reviews/:id` | ❌ | Deletar |
+
+**Exemplo POST `/reviews`:**
+```json
+{
+  "personId": 5,
+  "evaluatorId": 2,
+  "date": "2024-06-01",
+  "answers": [
+    { "questionId": 1, "score": 3, "notes": "Alguma dificuldade" }
+  ]
+}
+```
+
+---
+
+### 📋 Fichas de Monitoramento (Monitoring Sheets Module) `/monitoring-sheets`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/monitoring-sheets` | ❌ | Criar ficha de monitoramento |
+| GET | `/monitoring-sheets` | ❌ | Listar todas |
+| GET | `/monitoring-sheets/:id` | ❌ | Obter por ID |
+| PATCH | `/monitoring-sheets/:id` | ❌ | Atualizar |
+| DELETE | `/monitoring-sheets/:id` | ❌ | Deletar |
+
+**Exemplo POST `/monitoring-sheets`:**
+```json
+{
+  "personId": 5,
+  "date": "2024-06-01",
+  "observations": "Comportamento adequado observado",
+  "status": "ACTIVE"
+}
+```
+
+---
+
+### 🔗 Associação Pessoa-Empresa (People Company Module) `/people-company`
+
+| Método | Rota | Autenticado | Descrição |
+|--------|------|-------------|----------|
+| POST | `/people-company` | ❌ | Associar pessoa com empresa |
+| GET | `/people-company` | ❌ | Listar todas as associações |
+| GET | `/people-company/:id` | ❌ | Obter associação por ID |
+| PATCH | `/people-company/:id` | ❌ | Atualizar associação |
+| DELETE | `/people-company/:id` | ❌ | Remover associação |
+
+**Exemplo POST `/people-company`:**
+```json
+{
+  "personId": 5,
+  "companyId": 2,
+  "startDate": "2024-01-15",
+  "position": "Estagiário",
+  "status": "ACTIVE"
+}
+```
+
+---
+
+### 📊 Resumo de Autenticação
+
+| Tipo | Significado | Como usar |
+|------|-------------|----------|
+| ❌ Sem autenticação | Endpoint público | Nenhum header necessário |
+| ✅ JWT | Requer token JWT | Header: `Authorization: Bearer <token>` |
+| + ADMIN | Requer role ADMIN | Token de usuário com roleId = 1 |
+| + PROFESSOR | Requer role PROFESSOR | Token de usuário com roleId = 2 |
+| + Roles (1,2) | Requer ADMIN OU PROFESSOR | Token de qualquer um dos dois |
+
+---
+
+## �💼 Scripts úteis
 
 ```bash
 # Desenvolvimento
@@ -508,6 +732,9 @@ Para mais detalhes, consulte: [NestJS Docs - Deployment](https://docs.nestjs.com
 ✔ O projeto usa **Validação global** (ValidationPipe)
 ✔ Rotas não autorizadas retornam erro adequado
 ✔ Melhor prática: não exponha dados sensíveis nas respostas
+✔ **Review Answers** são gerenciadas via o módulo de Reviews (sem endpoints públicos dedicados)
+✔ Endpoints sem autenticação podem ser protegidos adicionando `@UseGuards(AuthGuard('jwt'))` nos controllers
+✔ O endpoint `/auth/me` retorna os dados do usuário autenticado a partir do token JWT
 
 ---
 
